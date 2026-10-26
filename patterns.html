@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>マイ先生 リール一覧 デザイン5案</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Klee+One:wght@400;600&family=Caveat:wght@500;600&display=swap">
+<style>
+/* Layout: five straight-edged phones in a row (wrapping), each a static Instagram reels tab in a different grid treatment */
+:root{
+  --bg:#f6f3f1; --fg:#2b2730; --muted:#8a8290; --line:#e2dcdf; --line2:#cfc7cc; --card:#fdfcfb; --card2:#f1edee;
+  --accent:#d98aa0; --ink:#3a3340;
+  --wash1:#f3dfd2; --wash2:#e1dcef; --wash3:#d6e7e1; --wash4:#f0dbe1;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --latin:"Cormorant Garamond","Shippori Mincho",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --hand:"Klee One","Hiragino Maru Gothic ProN",sans-serif;
+  --script:"Caveat","Klee One",cursive;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34; --ink:#efeaee;
+  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34; --ink:#efeaee;
+  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.6;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wash{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.wash span{position:absolute;filter:blur(90px);opacity:.55}
+.wash .w1{width:50vw;height:40vw;background:var(--wash1);top:-12vw;left:-10vw}
+.wash .w2{width:40vw;height:40vw;background:var(--wash2);top:35vh;right:-12vw}
+.wash .w3{width:38vw;height:30vw;background:var(--wash3);bottom:-8vw;left:22vw}
+.wash .w4{width:26vw;height:26vw;background:var(--wash4);bottom:14vh;right:28vw}
+
+.wrap{position:relative;z-index:1;max-width:1700px;margin:0 auto;padding-block:40px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.head{max-width:60em;margin-bottom:36px}
+.eyebrow{font-family:var(--latin);font-style:italic;font-size:15px;letter-spacing:.08em;color:var(--muted);margin:0 0 6px}
+h1{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.35;margin:0;letter-spacing:.02em;text-wrap:balance}
+.lead{margin:10px 0 0;color:var(--muted);font-size:13px;font-weight:300}
+
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px 28px;justify-items:center}
+.pat{width:100%;max-width:330px;display:flex;flex-direction:column;gap:14px}
+.pat .label{display:flex;align-items:baseline;gap:10px;border-top:1px solid var(--line);padding-top:10px}
+.pat .label i{font-family:var(--latin);font-style:italic;font-size:22px;line-height:1;color:var(--muted)}
+.pat .label b{font-weight:500;font-size:14px}
+.pat .label small{display:block;color:var(--muted);font-size:11.5px;font-weight:300;line-height:1.5;margin-top:2px}
+
+/* ---- phone shell (shared) ---- */
+.phone{width:100%;background:var(--card);border:1px solid var(--line2);box-shadow:0 40px 70px -30px rgba(50,35,60,.35),0 0 0 6px var(--card2);overflow:hidden;position:relative}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 6px;font-weight:500;font-size:12.5px;letter-spacing:.04em}
+.topbar .dots{letter-spacing:2px;color:var(--muted)}
+.profile{padding:4px 16px 12px}
+.prow{display:flex;align-items:center;gap:16px}
+.avatar{width:60px;height:60px;border-radius:50%;padding:2px;background:conic-gradient(from 200deg,#e6a95b,#d98aa0,#8c7fbf,#7a9cc6,#7bb3a4,#e6a95b);flex:none}
+.avatar div{width:100%;height:100%;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-family:var(--latin);font-style:italic;font-size:22px}
+.stats{display:flex;flex:1;justify-content:space-around}
+.stats div{text-align:center;line-height:1.1}
+.stats b{display:block;font-family:var(--latin);font-weight:500;font-size:17px;font-variant-numeric:tabular-nums}
+.stats span{font-size:10px;color:var(--muted);letter-spacing:.04em}
+.bio{margin-top:10px;font-size:11px;line-height:1.55;font-weight:300}
+.bio b{display:block;font-weight:500;font-size:12px}
+.bio .role{color:var(--muted);font-size:10.5px}
+.hl{display:flex;gap:10px;padding:6px 16px 4px;overflow:hidden}
+.hl div{flex:none;width:46px;text-align:center;font-size:8.5px;line-height:1.2;color:var(--muted)}
+.hl i{display:block;width:40px;height:40px;border-radius:50%;margin:0 auto 4px;border:1px solid var(--c);padding:2px;background:var(--card)}
+.hl i span{display:block;width:100%;height:100%;border-radius:50%;background:var(--c);opacity:.5}
+.tabs{display:flex;border-top:1px solid var(--line);margin-top:6px}
+.tabs div{flex:1;text-align:center;padding:7px 0 5px;font-size:13px;color:var(--muted);border-bottom:1px solid transparent}
+.tabs .act{color:var(--fg);border-bottom-color:var(--fg)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;padding:1.5px 0 0}
+.tile{position:relative;aspect-ratio:3/4;max-width:100%;overflow:hidden;background:var(--soft)}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.views{position:absolute;left:6px;bottom:5px;z-index:2;color:#fff;font-size:8.5px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.views::before{content:"▶ ";font-size:6.5px}
+
+/* ===== A. ミニマル：細タグ ===== */
+.pA .tile::after{content:"";position:absolute;inset:auto 0 0;height:50%;background:linear-gradient(to top,rgba(30,22,34,.62),rgba(30,22,34,0))}
+.pA .tag{position:absolute;top:0;left:0;z-index:2;background:var(--c);color:#fff;font-size:7.5px;font-weight:500;letter-spacing:.06em;padding:3px 6px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pA .cap{position:absolute;left:6px;right:6px;bottom:18px;z-index:2;color:#fff;font-size:9px;line-height:1.35;text-shadow:0 1px 3px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ===== B. マット：色台紙＋下キャプション ===== */
+.pB .grid{gap:6px;padding:8px 8px 8px;background:var(--card2)}
+.pB .tile{aspect-ratio:auto;background:var(--soft);padding:5px 5px 7px;display:flex;flex-direction:column;gap:5px}
+.pB .tile img{aspect-ratio:3/3.4;height:auto}
+.pB .tile .ph{position:relative}
+.pB .views{color:#fff}
+.pB .cap{font-size:8.5px;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em;font-weight:400}
+.pB .tag{font-family:var(--latin);font-style:italic;font-size:9px;color:var(--c);letter-spacing:.04em;line-height:1;filter:saturate(1.1) brightness(.85)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pB .cap{color:#2b2730} }
+:root[data-theme="dark"] .pB .cap{color:#2b2730}
+
+/* ===== C. ステッカー：遊びのある装飾 ===== */
+.pC .grid{gap:4px;padding:6px}
+.pC .tile{overflow:visible}
+.pC .tile .ph{position:relative;overflow:hidden;height:100%}
+.pC .tile::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(to top,rgba(30,22,34,.5),rgba(30,22,34,0));pointer-events:none}
+.pC .badge{position:absolute;top:-6px;right:-6px;z-index:3;width:38px;height:38px;border-radius:50%;background:var(--c);color:#fff;font-family:var(--hand);font-size:7.5px;font-weight:600;line-height:1.1;display:grid;place-items:center;text-align:center;padding:4px;transform:rotate(var(--r,8deg));box-shadow:0 2px 0 rgba(0,0,0,.08);border:1.5px dashed rgba(255,255,255,.7)}
+.pC .cap{position:absolute;left:6px;right:6px;bottom:17px;z-index:2;color:#fff;font-family:var(--hand);font-size:9px;line-height:1.35;text-shadow:0 1px 3px rgba(0,0,0,.4);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pC .tape{position:absolute;top:-5px;left:50%;width:34px;height:10px;transform:translateX(-50%) rotate(-3deg);background:color-mix(in srgb,var(--c) 55%,#fff);opacity:.9;z-index:3;background-image:repeating-linear-gradient(90deg,transparent 0 3px,rgba(255,255,255,.35) 3px 4px)}
+.pC .spark{position:absolute;z-index:3;color:var(--c);font-size:12px;line-height:1;left:4px;top:4px;filter:brightness(1.15)}
+.pC .tile:nth-child(3n) .badge{--r:-7deg}
+.pC .tile:nth-child(3n+2) .badge{--r:12deg}
+.pC .profile .bio b{font-family:var(--hand);font-weight:600}
+.pC .hl i{border-style:dashed}
+.pC .scribble{position:absolute;right:14px;top:58px;font-family:var(--script);font-size:15px;color:var(--accent);transform:rotate(-6deg);line-height:1}
+
+/* ===== D. エディトリアル：大きめ1枚＋明朝 ===== */
+.pD .grid{gap:2px;padding:2px 0 0}
+.pD .tile.big{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.pD .tile::after{content:"";position:absolute;inset:auto 0 0;height:55%;background:linear-gradient(to top,rgba(30,22,34,.66),rgba(30,22,34,0))}
+.pD .num{position:absolute;top:5px;left:7px;z-index:2;font-family:var(--latin);font-style:italic;font-size:15px;line-height:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.pD .tile.big .num{font-size:28px;top:8px;left:10px}
+.pD .tag{position:absolute;top:8px;right:7px;z-index:2;width:8px;height:8px;border-radius:50%;background:var(--c);box-shadow:0 0 0 1.5px rgba(255,255,255,.8)}
+.pD .cap{position:absolute;left:7px;right:7px;bottom:17px;z-index:2;color:#fff;font-family:var(--serif);font-size:9px;line-height:1.4;letter-spacing:.03em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pD .tile.big .cap{font-size:13px;bottom:22px;left:10px;right:10px;-webkit-line-clamp:3}
+.pD .tile.big .views{left:10px;bottom:8px;font-size:9.5px}
+.pD .ey{position:absolute;left:10px;top:44px;z-index:2;font-family:var(--latin);font-style:italic;font-size:10px;letter-spacing:.12em;color:#fff;opacity:.9}
+
+/* ===== E. カラーブロック：文字タイルを挟む ===== */
+.pE .grid{gap:2px;padding:2px 0 0}
+.pE .tile.txt{background:var(--c);display:flex;flex-direction:column;justify-content:space-between;padding:8px 7px;color:#fff}
+.pE .tile.txt .k{font-family:var(--latin);font-style:italic;font-size:11px;letter-spacing:.06em;opacity:.9;line-height:1}
+.pE .tile.txt .n{font-family:var(--serif);font-size:12.5px;line-height:1.3;letter-spacing:.02em;text-wrap:balance}
+.pE .tile.txt .ln{width:18px;height:1px;background:rgba(255,255,255,.7);margin:6px 0}
+.pE .tile.txt .sub{font-size:8px;letter-spacing:.08em;opacity:.85}
+.pE .tile.ph::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(to top,rgba(30,22,34,.5),rgba(30,22,34,0))}
+.pE .tile.ph .dot{position:absolute;top:6px;left:6px;width:10px;height:10px;background:var(--c);z-index:2}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wash" aria-hidden="true"><span class="w1"></span><span class="w2"></span><span class="w3"></span><span class="w4"></span></div>
+
+<div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Music Facilitator — Reels Grid Studies</p>
+    <h1>マイ先生のリール一覧、グリッドの見え方 5案</h1>
+    <p class="lead">同じ10スキル・同じ写真で、タグの付け方と装飾の量だけを変えています。A→Eの順に装飾の遊びが増えます。</p>
+  </div>
+  <div class="row" id="row"></div>
+</div>
+
+<script>
+const SKILLS = {
+  1:{name:"ワンダーレッスン", en:"Wonder", target:"未就学児 0-2", short:"0-2歳", c:"#e6a95b", soft:"#f3e3d0", img:"img/s1.jpg", cap:"0歳からの音感あそび、きょうの一コマ"},
+  2:{name:"アンチエイジングボイトレ", en:"Voice", target:"シニア", short:"シニア", c:"#7a9cc6", soft:"#dbe4f0", img:"img/s2.jpg", cap:"声を出すと背すじも伸びる。70代の発声レッスン"},
+  3:{name:"1曲完成ピアノレッスン", en:"One Song", target:"シニア", short:"シニア", c:"#6f84a8", soft:"#dde2ea", img:"img/s3.jpg", cap:"3か月で1曲弾けた。78歳Tさんの発表"},
+  4:{name:"コードピアノ Jazz-Steps", en:"Chords", target:"ピアノ指導者", short:"指導者", c:"#8c7fbf", soft:"#e2def0", img:"img/s4.jpg", cap:"先生のための『コードで弾く』入門"},
+  5:{name:"KIDSピアノ × Jazz-Steps", en:"Kids Piano", target:"KIDS", short:"KIDS", c:"#e39a63", soft:"#f3dfd0", img:"img/s5.jpg", cap:"7歳、はじめての即興づくり"},
+  6:{name:"Music Pilates", en:"Pilates", target:"ママへ", short:"ママ", c:"#d98aa0", soft:"#f1dde3", img:"img/s6.jpg", cap:"生演奏つきピラティス、はじまりました"},
+  7:{name:"KIDSボイトレ", en:"Kids Voice", target:"KIDS", short:"KIDS", c:"#e8b86d", soft:"#f4e7d1", img:"img/s7.jpg", cap:"こどもの声はのびる。KIDSボイトレ"},
+  8:{name:"園の先生のコードピアノ", en:"Lead Sheet", target:"幼・保育園の先生", short:"園の先生", c:"#9d91c9", soft:"#e6e2f1", img:"img/s8.jpg", cap:"保育士さん向け：コード3つで朝の歌"},
+  9:{name:"子供・老人施設での演奏活動", en:"Outreach", target:"演奏活動", short:"演奏活動", c:"#7bb3a4", soft:"#dbe9e4", img:"img/s9.jpg", cap:"デイサービスでの演奏会レポート"},
+  10:{name:"講師自身のコンサート", en:"Concert", target:"講師向け", short:"講師", c:"#6aa396", soft:"#d7e5e0", img:"img/s10.jpg", cap:"先生自身が輝くコンサートの作り方"},
+};
+const ORDER = [6,1,9,4,2,10,5,8,3,7,1,6];
+const VIEWS = ["1.2万","8,420","3.4万","2,180","5,960","1.8万","7,310","4,050","2.6万","9,870","1,540","6,230"];
+const PATTERNS = [
+  {k:"A", cls:"pA", title:"ミニマル", desc:"左上に細い色タグ。いまの方向性をそのまま静止画に。", render:tileA},
+  {k:"B", cls:"pB", title:"マット", desc:"スキル色の台紙に写真を乗せ、キャプションを下に。アルバムのような見え方。", render:tileB},
+  {k:"C", cls:"pC", title:"ステッカー", desc:"丸バッジ・マスキングテープ・手書き風。いちばん遊びが多い案。", render:tileC},
+  {k:"D", cls:"pD", title:"エディトリアル", desc:"1枚を大きく、番号は英字イタリック、キャプションは明朝。雑誌の目次のように。", render:tileD},
+  {k:"E", cls:"pE", title:"カラーブロック", desc:"写真の合間にスキル名だけの色タイルを挟む。色面で10スキルを印象づける。", render:tileE},
+];
+const sty = s => `--c:${s.c};--soft:${s.soft}`;
+function tileA(s,i){ return `<div class="tile" style="${sty(s)}"><img src="${s.img}" alt=""><span class="tag">${s.name}</span><span class="cap">${s.cap}</span><span class="views">${VIEWS[i]}</span></div>`; }
+function tileB(s,i){ return `<div class="tile" style="${sty(s)}"><div class="ph"><img src="${s.img}" alt=""><span class="views">${VIEWS[i]}</span></div><span class="tag">${s.en}</span><span class="cap">${s.cap}</span></div>`; }
+function tileC(s,i){
+  const deco = i%3===0 ? `<span class="tape"></span>` : i%3===1 ? `<span class="spark">✦</span>` : ``;
+  return `<div class="tile" style="${sty(s)}"><div class="ph"><img src="${s.img}" alt=""><span class="cap">${s.cap}</span><span class="views">${VIEWS[i]}</span></div><span class="badge">${s.short}</span>${deco}</div>`;
+}
+function tileD(s,i){
+  const big = i===0;
+  return `<div class="tile${big?' big':''}" style="${sty(s)}"><img src="${s.img}" alt=""><span class="num">${String(i+1).padStart(2,'0')}</span><span class="tag"></span>${big?`<span class="ey">${s.en}</span>`:''}<span class="cap">${s.cap}</span><span class="views">${VIEWS[i]}</span></div>`;
+}
+function tileE(s,i){
+  if (i%4===1) return `<div class="tile txt" style="${sty(s)}"><span class="k">${s.en}</span><span><span class="n">${s.name}</span><span class="ln"></span><span class="sub">${s.target}</span></span></div>`;
+  return `<div class="tile ph" style="${sty(s)}"><img src="${s.img}" alt=""><span class="dot"></span><span class="views">${VIEWS[i]}</span></div>`;
+}
+function phone(p){
+  const hl = Object.values(SKILLS).slice(0,7).map(s=>`<div style="--c:${s.c}"><i><span></span></i>${s.short}</div>`).join('');
+  const tiles = ORDER.map((id,i)=>p.render(SKILLS[id],i)).join('');
+  return `<div class="pat"><div class="phone ${p.cls}">
+    <div class="topbar"><span>mai_music_facilitator</span><span class="dots">•••</span></div>
+    ${p.k==='C'?'<span class="scribble">music!</span>':''}
+    <div class="profile"><div class="prow"><div class="avatar"><div>M</div></div>
+      <div class="stats"><div><b>128</b><span>投稿</span></div><div><b>2,480</b><span>フォロワー</span></div><div><b>312</b><span>フォロー中</span></div></div></div>
+      <div class="bio"><b>マイ先生｜MUSIC FACILITATOR</b><span class="role">1人1人の人生を輝かせるための音楽（ピアノ）教育</span></div></div>
+    <div class="hl">${hl}</div>
+    <div class="tabs"><div>▦</div><div class="act">▶</div><div>◎</div></div>
+    <div class="grid">${tiles}</div>
+  </div>
+  <div class="label"><i>${p.k}</i><div><b>${p.title}</b><small>${p.desc}</small></div></div></div>`;
+}
+document.getElementById('row').innerHTML = PATTERNS.map(phone).join('');
+</script>
+
+</body>
+</html>

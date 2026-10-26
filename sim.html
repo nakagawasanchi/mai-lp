@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>マイ先生 リール一覧シミュレーション</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap">
+<style>
+/* Layout: quiet pastel editorial page; a straight-edged phone with an Instagram reels tab, a hairline legend beside it */
+:root{
+  --bg:#f6f3f1; --fg:#2b2730; --muted:#8a8290; --line:#e2dcdf; --line2:#cfc7cc; --card:#fdfcfb; --card2:#f1edee;
+  --accent:#d98aa0;
+  --wash1:#f3dfd2; --wash2:#e1dcef; --wash3:#d6e7e1; --wash4:#f0dbe1;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --latin:"Cormorant Garamond","Shippori Mincho",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34;
+  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34;
+  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-weight:400;font-size:14px;line-height:1.6;position:relative;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wash{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.wash span{position:absolute;filter:blur(90px);opacity:.55}
+.wash .w1{width:50vw;height:40vw;background:var(--wash1);top:-12vw;left:-10vw}
+.wash .w2{width:40vw;height:40vw;background:var(--wash2);top:35vh;right:-12vw}
+.wash .w3{width:38vw;height:30vw;background:var(--wash3);bottom:-8vw;left:22vw}
+.wash .w4{width:26vw;height:26vw;background:var(--wash4);bottom:14vh;right:28vw}
+
+.wrap{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding-block:40px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:48px;align-items:start}
+@media (max-width:880px){.wrap{grid-template-columns:1fr;gap:28px;padding-block:20px 40px}}
+
+/* ---- legend / control panel ---- */
+.panel{min-width:0;display:flex;flex-direction:column;gap:22px}
+.eyebrow{font-family:var(--latin);font-style:italic;font-size:15px;letter-spacing:.08em;color:var(--muted);margin:0 0 6px}
+.panel h1{font-family:var(--serif);font-weight:500;font-size:26px;line-height:1.35;margin:0;letter-spacing:.02em;text-wrap:balance}
+.panel .lead{margin:10px 0 0;color:var(--muted);font-size:13px;font-weight:300;max-width:46em}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:16px;border-top:1px solid var(--line)}
+.btn{font:inherit;font-weight:500;font-size:12px;letter-spacing:.08em;border:1px solid var(--fg);border-radius:0;padding:8px 18px;background:var(--fg);color:var(--bg);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line2)}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,.hl div:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.speed{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.06em;color:var(--muted);margin-left:auto}
+.speed input{width:120px;accent-color:var(--fg)}
+.speed b{font-weight:500;color:var(--fg);font-variant-numeric:tabular-nums;min-width:3.2em}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+@media (max-width:520px){.legend{grid-template-columns:1fr}}
+.chip{display:flex;align-items:center;gap:12px;background:transparent;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;padding:11px 12px;cursor:pointer;text-align:left;font:inherit;color:var(--fg);transition:background .2s,opacity .2s;min-width:0}
+.chip:hover{background:var(--card)}
+.chip .sw{width:12px;height:34px;flex:none;background:var(--c)}
+.chip .t{min-width:0;flex:1}
+.chip .t b{display:block;font-weight:500;font-size:13px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip .t small{display:block;color:var(--muted);font-size:11px;line-height:1.3;letter-spacing:.04em}
+.chip .n{font-family:var(--latin);font-size:17px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none;line-height:1}
+.chip.dim{opacity:.32}
+.chip.on{background:var(--card);box-shadow:inset 0 0 0 1px var(--fg)}
+.note{font-size:11px;color:var(--muted);margin:0;font-weight:300;letter-spacing:.02em;line-height:1.7}
+
+/* ---- phone ---- */
+.phone{width:392px;max-width:100%;justify-self:end;background:var(--card);border:1px solid var(--line2);box-shadow:0 40px 70px -30px rgba(50,35,60,.35),0 0 0 6px var(--card2);overflow:hidden;height:min(820px,88vh);position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px)}
+@media (max-width:880px){.phone{justify-self:center;position:static;height:auto;box-shadow:0 20px 40px -24px rgba(50,35,60,.35),0 0 0 4px var(--card2)}}
+.inner{position:relative;display:flex;flex-direction:column;height:100%;min-height:0}
+@media (max-width:880px){.inner{height:auto}.feed{max-height:70vh}}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 8px;font-weight:500;font-size:14px;letter-spacing:.04em}
+.topbar .dots{letter-spacing:2px;color:var(--muted)}
+.profile{padding:6px 18px 14px}
+.prow{display:flex;align-items:center;gap:20px}
+.avatar{width:72px;height:72px;border-radius:50%;padding:2px;background:conic-gradient(from 200deg,#e6a95b,#d98aa0,#8c7fbf,#7a9cc6,#7bb3a4,#e6a95b);flex:none}
+.avatar div{width:100%;height:100%;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-family:var(--latin);font-style:italic;font-size:26px;color:var(--fg)}
+.stats{display:flex;flex:1;justify-content:space-around}
+.stats div{text-align:center;line-height:1.15}
+.stats b{display:block;font-family:var(--latin);font-weight:500;font-size:20px;font-variant-numeric:tabular-nums}
+.stats span{font-size:11px;color:var(--muted);letter-spacing:.04em}
+.bio{margin-top:12px;font-size:12.5px;line-height:1.6;font-weight:300}
+.bio b{display:block;font-weight:500;font-size:13.5px}
+.bio .role{color:var(--muted);font-size:11.5px;letter-spacing:.03em}
+.pbtns{display:flex;gap:6px;margin-top:12px}
+.pbtns span{flex:1;text-align:center;font-size:12px;font-weight:500;letter-spacing:.06em;border:1px solid var(--line2);padding:6px 0}
+.pbtns .pri{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.hl{display:flex;gap:14px;padding:10px 18px 6px;overflow-x:auto;scrollbar-width:none}
+.hl::-webkit-scrollbar{display:none}
+.hl div{flex:none;width:56px;text-align:center;font-size:9.5px;line-height:1.2;color:var(--muted);letter-spacing:.02em;cursor:pointer}
+.hl i{display:block;width:50px;height:50px;border-radius:50%;margin:0 auto 5px;border:1px solid var(--c);padding:2px;background:var(--card)}
+.hl i span{display:block;width:100%;height:100%;border-radius:50%;background:var(--c);opacity:.5}
+.hl div.on{color:var(--fg)}
+.hl div.on i span{opacity:1}
+.tabs{display:flex;border-top:1px solid var(--line);margin-top:8px}
+.tabs div{flex:1;text-align:center;padding:9px 0 7px;font-size:15px;color:var(--muted);border-bottom:1px solid transparent}
+.tabs .act{color:var(--fg);border-bottom-color:var(--fg)}
+.feed{flex:1;overflow-y:auto;overscroll-behavior:contain;background:var(--card);scrollbar-width:thin}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;padding:1.5px 0 28px}
+.tile{position:relative;aspect-ratio:3/4;max-width:100%;overflow:hidden;background:var(--c-soft);animation:drop .55s cubic-bezier(.2,.8,.2,1) both}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.tile::after{content:"";position:absolute;inset:auto 0 0;height:50%;background:linear-gradient(to top,rgba(30,22,34,.62),rgba(30,22,34,0))}
+.tile .tag{position:absolute;top:0;left:0;z-index:2;background:var(--c);color:#fff;font-size:8.5px;font-weight:500;letter-spacing:.06em;padding:3px 7px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .cap{position:absolute;left:7px;right:7px;bottom:21px;z-index:2;color:#fff;font-size:10px;font-weight:400;line-height:1.35;letter-spacing:.01em;text-shadow:0 1px 3px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tile .views{position:absolute;left:7px;bottom:6px;z-index:2;color:#fff;font-size:9.5px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.tile .views::before{content:"▶ ";font-size:7px}
+.tile.new::before{content:"";position:absolute;inset:0;z-index:3;box-shadow:inset 0 0 0 2px var(--c);pointer-events:none}
+.tile.hide{display:none}
+@keyframes drop{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.toast{position:absolute;left:50%;transform:translateX(-50%);top:118px;z-index:5;background:var(--fg);color:var(--bg);font-size:11px;letter-spacing:.06em;padding:6px 14px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){.tile{animation:none}.chip{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wash" aria-hidden="true"><span class="w1"></span><span class="w2"></span><span class="w3"></span><span class="w4"></span></div>
+
+<div class="wrap">
+  <section class="panel">
+    <div>
+      <p class="eyebrow">Music Facilitator — Instagram Reels Simulation</p>
+      <h1>マイ先生の10スキルが<br>五月雨に流れるリール一覧</h1>
+      <p class="lead">10のスキルに関する投稿が、Instagramのリールタブに順番に流れてくる様子を再現しています。スキルを選ぶと、その投稿だけに絞って眺められます。</p>
+    </div>
+    <div class="ctrl">
+      <button class="btn" id="toggle" type="button">一時停止</button>
+      <button class="btn ghost" id="reset" type="button">最初から</button>
+      <label class="speed">投稿間隔 <input id="speed" type="range" min="400" max="4000" step="100" value="1600"><b id="speedv">1.6秒</b></label>
+    </div>
+    <div class="legend" id="legend"></div>
+    <p class="note">色は資料の左帯を踏襲し、彩度を落としたパステルに調整。未就学児・KIDS＝アプリコット／シニア＝ブルー／ピアノ指導者・園の先生＝ラベンダー／ママ＝ローズ／演奏活動・コンサート＝セージ。写真はHiggsfieldで生成したイメージです。</p>
+  </section>
+
+  <div class="phone">
+    <div class="inner">
+      <div class="topbar"><span>mai_music_facilitator</span><span class="dots">•••</span></div>
+      <div class="profile">
+        <div class="prow">
+          <div class="avatar"><div>M</div></div>
+          <div class="stats">
+            <div><b id="st-posts">0</b><span>投稿</span></div>
+            <div><b>2,480</b><span>フォロワー</span></div>
+            <div><b>312</b><span>フォロー中</span></div>
+          </div>
+        </div>
+        <div class="bio">
+          <b>マイ先生｜MUSIC FACILITATOR</b>
+          <span class="role">1人1人の人生を輝かせるための音楽（ピアノ）教育</span><br>
+          0歳からシニアまで。ピアノ・ボイトレ・Jazz-Steps・ピラティス・施設演奏
+        </div>
+        <div class="pbtns"><span class="pri">フォロー</span><span>メッセージ</span><span>連絡先</span></div>
+      </div>
+      <div class="hl" id="hl"></div>
+      <div class="tabs"><div>▦</div><div class="act">▶</div><div>◎</div></div>
+      <div class="toast" id="toast"></div>
+      <div class="feed" id="feed"><div class="grid" id="grid"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SKILLS = [
+  {id:1, name:"ワンダーレッスン", target:"未就学児(0-2)", short:"0-2歳", c:"#e6a95b", soft:"#f3e3d0", img:"img/s1.jpg",
+   caps:["ベビーマッサージに音楽をのせて","0歳からの音感あそび、きょうの一コマ","リズムに合わせて、1歳さんの反応"]},
+  {id:2, name:"アンチエイジングボイトレ", target:"シニア", short:"シニア", c:"#7a9cc6", soft:"#dbe4f0", img:"img/s2.jpg",
+   caps:["声を出すと背すじも伸びる。70代の発声レッスン","呼吸ひとつで声が若返る3つのコツ","リードシートで歌うから、伴奏にも強くなる"]},
+  {id:3, name:"1曲完成ピアノレッスン", target:"シニア", short:"シニア", c:"#6f84a8", soft:"#dde2ea", img:"img/s3.jpg",
+   caps:["3か月で1曲弾けた。78歳Tさんの発表","Jazz-Stepsで最初の1曲を完成させるまで","憧れの曲を『自分の手』で。シニアピアノ"]},
+  {id:4, name:"コードピアノ Jazz-Steps", target:"ピアノ指導者向け", short:"指導者", c:"#8c7fbf", soft:"#e2def0", img:"img/s4.jpg",
+   caps:["先生のための『コードで弾く』入門","Jazz-Stepsを指導に組み込む方法","楽譜なしで伴奏がつけられるようになる練習"]},
+  {id:5, name:"KIDSピアノ × Jazz-Steps", target:"KIDS", short:"KIDS", c:"#e39a63", soft:"#f3dfd0", img:"img/s5.jpg",
+   caps:["基本レッスンにJazz-Stepsを使ってみた","7歳、はじめての即興づくり","アプリで『自分で練習できる子』に育つ"]},
+  {id:6, name:"Music Pilates", target:"ママへ", short:"ママ", c:"#d98aa0", soft:"#f1dde3", img:"img/s6.jpg",
+   caps:["生演奏つきピラティス、はじまりました","ママの体をゆるめる30分、音は生ピアノで","先生方へ：これを弾けるようになるJazz-Steps指導"]},
+  {id:7, name:"KIDSボイトレ", target:"KIDS", short:"KIDS", c:"#e8b86d", soft:"#f4e7d1", img:"img/s7.jpg",
+   caps:["こどもの声はのびる。KIDSボイトレ","歌うのが好きになる最初の一歩","リードシートで歌う。伴奏はJazz-Stepsで"]},
+  {id:8, name:"園の先生のコードピアノ", target:"幼・保育園の先生／目指す方", short:"園の先生", c:"#9d91c9", soft:"#e6e2f1", img:"img/s8.jpg",
+   caps:["保育士さん向け：コード3つで朝の歌","リードシートで弾ける先生になる","自分のクラスで実践するまでをサポート"]},
+  {id:9, name:"子供・老人施設での演奏活動", target:"演奏活動", short:"演奏活動", c:"#7bb3a4", soft:"#dbe9e4", img:"img/s9.jpg",
+   caps:["デイサービスでの演奏会レポート","即興で場を温める。施設演奏のコツ","ピアノの先生向け：演奏活動の始め方"]},
+  {id:10, name:"講師自身のコンサート", target:"講師向け", short:"講師", c:"#6aa396", soft:"#d7e5e0", img:"img/s10.jpg",
+   caps:["先生自身が輝くコンサートの作り方","セトリと構成、こう組むと魅力が出る","今年のコンサート、裏側を少しだけ"]},
+];
+
+const grid = document.getElementById('grid');
+const feed = document.getElementById('feed');
+const legend = document.getElementById('legend');
+const hl = document.getElementById('hl');
+const toast = document.getElementById('toast');
+const stPosts = document.getElementById('st-posts');
+const toggleBtn = document.getElementById('toggle');
+const speedEl = document.getElementById('speed');
+const speedV = document.getElementById('speedv');
+
+let counts = {}, total = 0, timer = null, running = true, filter = null, lastSkill = -1;
+const MAX_TILES = 72;
+
+function fmtViews(n){ return n >= 10000 ? (n/10000).toFixed(1).replace(/\.0$/,'') + '万' : n.toLocaleString('ja-JP'); }
+function pickSkill(){
+  let s; do { s = SKILLS[Math.floor(Math.random()*SKILLS.length)]; } while (s.id === lastSkill && Math.random() < 0.85);
+  lastSkill = s.id; return s;
+}
+function makeTile(s, fresh){
+  const t = document.createElement('div');
+  t.className = 'tile' + (fresh ? ' new' : '');
+  t.style.setProperty('--c', s.c); t.style.setProperty('--c-soft', s.soft);
+  t.dataset.skill = s.id;
+  const cap = s.caps[Math.floor(Math.random()*s.caps.length)];
+  const views = Math.round(Math.pow(Math.random(), 2.2) * 48000 + 600);
+  t.innerHTML = `<img src="${s.img}" alt="${s.name}の投稿サムネイル"><span class="tag">${s.name}</span><span class="cap">${cap}</span><span class="views">${fmtViews(views)}</span>`;
+  if (filter && filter !== s.id) t.classList.add('hide');
+  return t;
+}
+function addPost(fresh){
+  const s = pickSkill();
+  const t = makeTile(s, fresh);
+  grid.prepend(t);
+  counts[s.id] = (counts[s.id]||0) + 1; total++;
+  if (fresh){
+    setTimeout(()=>t.classList.remove('new'), 1400);
+    if (!filter || filter === s.id){ showToast(`新しい投稿 — ${s.name}`); }
+    if (feed.scrollTop > 40) feed.scrollTop = 0;
+  }
+  while (grid.children.length > MAX_TILES) grid.lastElementChild.remove();
+  updateLegend();
+}
+let toastT;
+function showToast(msg){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(()=>toast.classList.remove('show'), 900); }
+function updateLegend(){
+  stPosts.textContent = total.toLocaleString('ja-JP');
+  SKILLS.forEach(s => { const n = legend.querySelector(`[data-id="${s.id}"] .n`); if (n) n.textContent = (counts[s.id]||0); });
+}
+function buildLegend(){
+  SKILLS.forEach(s => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.dataset.id = s.id; b.style.setProperty('--c', s.c);
+    b.innerHTML = `<span class="sw"></span><span class="t"><b>${s.name}</b><small>${s.target}</small></span><span class="n">0</span>`;
+    b.addEventListener('click', ()=>setFilter(filter === s.id ? null : s.id));
+    legend.appendChild(b);
+    const h = document.createElement('div');
+    h.style.setProperty('--c', s.c); h.dataset.id = s.id; h.tabIndex = 0;
+    h.innerHTML = `<i><span></span></i>${s.short}`;
+    h.addEventListener('click', ()=>setFilter(filter === s.id ? null : s.id));
+    hl.appendChild(h);
+  });
+}
+function setFilter(id){
+  filter = id;
+  legend.querySelectorAll('.chip').forEach(c => { c.classList.toggle('on', !!filter && +c.dataset.id === filter); c.classList.toggle('dim', !!filter && +c.dataset.id !== filter); });
+  hl.querySelectorAll('div').forEach(c => c.classList.toggle('on', !!filter && +c.dataset.id === filter));
+  grid.querySelectorAll('.tile').forEach(t => t.classList.toggle('hide', !!filter && +t.dataset.skill !== filter));
+  feed.scrollTop = 0;
+}
+function schedule(){
+  clearInterval(timer);
+  if (running) timer = setInterval(()=>addPost(true), +speedEl.value);
+}
+toggleBtn.addEventListener('click', ()=>{ running = !running; toggleBtn.textContent = running ? '一時停止' : '再開'; schedule(); });
+document.getElementById('reset').addEventListener('click', ()=>{ grid.innerHTML=''; counts={}; total=0; seed(); schedule(); });
+speedEl.addEventListener('input', ()=>{ speedV.textContent = (speedEl.value/1000).toFixed(1) + '秒'; schedule(); });
+function seed(){ for (let i=0;i<12;i++) addPost(false); }
+
+buildLegend(); seed(); schedule();
+</script>
+
+</body>
+</html>
