@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Music Facilitator 講座</title>
@@ -10,16 +11,13 @@
 <style>
 /* Layout: long-scroll landing page, ivory ground, rose accent, serif headlines, straight edges, a 10-color ribbon as the recurring motif */
 :root{
+  color-scheme:light;
   --bg:#f8f5f2; --bg2:#f1ece9; --fg:#2b2730; --muted:#857d8b; --line:#e3dcde; --line2:#cdc4c9; --card:#fdfcfb;
   --rose:#d98aa0; --rose2:#f1dde3; --sage:#7bb3a4; --lav:#8c7fbf; --apricot:#e6a95b; --blue:#7a9cc6;
   --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
   --latin:"Cormorant Garamond","Shippori Mincho",serif;
   --sans:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#1d1a20; --bg2:#252129; --fg:#efeaee; --muted:#a099a6; --line:#352f38; --line2:#4a434e; --card:#27232b; --rose2:#4a3340; color-scheme:dark } }
-:root[data-theme="dark"]{
-  --bg:#1d1a20; --bg2:#252129; --fg:#efeaee; --muted:#a099a6; --line:#352f38; --line2:#4a434e; --card:#27232b; --rose2:#4a3340; color-scheme:dark }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}

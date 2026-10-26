@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>マイ先生 リール一覧シミュレーション</title>
@@ -10,6 +11,7 @@
 <style>
 /* Layout: quiet pastel editorial page; a straight-edged phone with an Instagram reels tab, a hairline legend beside it */
 :root{
+  color-scheme:light;
   --bg:#f6f3f1; --fg:#2b2730; --muted:#8a8290; --line:#e2dcdf; --line2:#cfc7cc; --card:#fdfcfb; --card2:#f1edee;
   --accent:#d98aa0;
   --wash1:#f3dfd2; --wash2:#e1dcef; --wash3:#d6e7e1; --wash4:#f0dbe1;
@@ -17,12 +19,6 @@
   --latin:"Cormorant Garamond","Shippori Mincho",serif;
   --sans:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34;
-  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark } }
-:root[data-theme="dark"]{
-  --bg:#1d1a20; --fg:#efeaee; --muted:#9e96a4; --line:#352f38; --line2:#4a434e; --card:#26222a; --card2:#2f2a34;
-  --wash1:#4b3a30; --wash2:#38325a; --wash3:#2c4a42; --wash4:#4d3540; color-scheme:dark }
 
 *{box-sizing:border-box}
 html,body{height:100%}
